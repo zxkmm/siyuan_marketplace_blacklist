@@ -1,18 +1,11 @@
 {
-    "addTopBarIcon": "使用插件添加一个顶栏按钮",
-    "cancel": "取消",
-    "save": "保存",
-    "byeMenu": "再见，菜单！",
-    "helloPlugin": "你好，插件！",
-    "byePlugin": "再见，插件！",
-    "showDialog": "弹出一个对话框",
-    "removedData": "数据已删除",
-    "confirmRemove": "确认删除 ${name} 中的数据？",
-    "insertEmoji": "插入表情",
-    "removeSpace": "移除空格",
-    "getTab": "在日志中打印出已打开的所有自定义页签",
-    "name": "思源",
-    "hello": {
-        "makesure": "使用这个模板之前，请阅读<a href=\"https://github.com/siyuan-note/plugin-sample\">官方教程</a>, 确保自己已经理解了插件的基本开发流程。"
-    }
+    "totalSwitch": "总开关",
+    "totalSwitchDesc": "此插件的功能开关",
+    "pluginBlacklistTitle": "集市内容黑名单",
+    "pluginBlacklistDesc": "输入你不想看到的插件/主题/图标/模板/挂件的包名。用英文或中文半角逗号分隔，例如 \",\" 或 \"，\"。",
+    "pluginBlacklistNoteTitle": "备注",
+    "pluginBlacklistNoteDesc": "你可以在这里做笔记，例如写下为什么不想看到某个插件。",
+    "hintTitle": "关于",
+    "hintDesc": "<ul><li>● 由 <a href='https://github.com/zxkmm'>zxkmm</a> 制作，并在 MIT 许可下开源。</li><li>● 如果你喜欢这个插件，请给我的 GitHub 仓库点个星⭐。</li><li>● 链接：<a href='https://github.com/zxkmm/siyuan_marketplace_blacklist'>https://github.com/zxkmm/siyuan_marketplace_blacklist</a></li><li>● 即使您不想看到特定的插件, 也请对您想隐藏的特定的插件的原作者保持友善, 并尊重他们的劳动成果, 谢谢! </li></ul>",
+    "uninstall_hint": "siyuan_marketplace_blacklist：卸载成功"
 }

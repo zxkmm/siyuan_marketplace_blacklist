@@ -1,18 +1,14 @@
 {
-    "addTopBarIcon": "Add a top bar icon by plugin",
-    "cancel": "Cancel",
-    "save": "Save",
-    "byeMenu": "Bye, Menu!",
-    "helloPlugin": "Hello, Plugin!",
-    "byePlugin": "Bye, Plugin!",
-    "showDialog": "Show dialog",
-    "removedData": "Data deleted",
-    "confirmRemove": "Confirm to delete the data in ${name}?",
-    "insertEmoji": "Insert Emoji",
-    "removeSpace": "Remove Space",
-    "getTab": "Print out all opened custom tabs in the debugger",
-    "name": "SiYuan",
-    "hello": {
-        "makesure": "Before using this template, please read the <a href=\"https://github.com/siyuan-note/plugin-sample\">offical sample</a>, make sure that you've known about the pipeline for plugin developing."
-    }
+    "totalSwitch":"Main Switch",
+    "totalSwitchDesc":"The Inner Switch of this plugin",
+    "pluginBlacklistTitle":"Black List of Bazaar",
+    "pluginBlacklistDesc":"Imput the package name of plugins/ themes/ icons/ templates/ widgets you don't wanna see. Seperate by English or Chinese half-width commas, i.e., \",\" or\"，\".",
+    "pluginBlacklistNoteTitle":"Notes",
+    "pluginBlacklistNoteDesc":"You can take notes here, for example write down why you don't wanna see such a plugin",
+    "hintTitle":"About",
+    "hintDesc":"<ul><li>● By <a href='https://github.com/zxkmm'>zxkmm</a> and open source under the MIT license.</li><li>● Please star⭐ my GitHub repository if you like this plugin.</li><li>● Link: <a href='https://github.com/zxkmm/siyuan_marketplace_blacklist'>https://github.com/zxkmm/siyuan_marketplace_blacklist</a></li><li>● Please keep respect to the author of those item you have hidden",
+    "uninstall_hint":"siyuan_marketplace_blacklist: Uninstall successfully"
+
+
+
 }

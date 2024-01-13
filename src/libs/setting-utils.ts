@@ -35,6 +35,7 @@ export class SettingUtils {
                     this.plugin.data[this.name] = data;
                     this.save();
                 }
+                window.location.reload();
             }
         });
     }
@@ -143,6 +144,11 @@ export class SettingUtils {
                 buttonElement.innerText = item.button?.label ?? 'Button';
                 buttonElement.onclick = item.button?.callback ?? (() => {});
                 itemElement = buttonElement;
+                break;
+            case 'hint':
+                let hintElement: HTMLElement = document.createElement('div');
+                hintElement.className = 'b3-label fn__flex-center';
+                itemElement = hintElement;
                 break;
         }
         this.elements.set(item.key, itemElement);
