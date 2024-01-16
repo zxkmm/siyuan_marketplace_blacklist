@@ -24,4 +24,12 @@ This plugin is designed for the following scenarios:
 
  - Repository/Source Code: https://github.com/zxkmm/siyuan_marketplace_blacklist  
  - Download: Search "siyuan_marketpace_blacklist" in the marketplace or visit https://github.com/zxkmm/siyuan_marketplace_blacklist/releases  
- - Report bugs/ Submit feature requests: https://github.com/zxkmm/siyuan_marketplace_blacklist/issues  
+ - Report bugs/ Submit feature requests: https://github.com/zxkmm/siyuan_marketplace_blacklist/issues
+
+# Additional Attachment to MIT License
+
+You are free to use the code in this repository, regardless of whether it's closed source or not, or whether it's part of paid software or not. However, I have incorporated these additional requests into the license of this repository. If you use the code, design, text, algorithms, or anything else from this repository, you must include my username "zxkmm" and the link to this repository in three places:
+
+1. In the code comments.
+2. In the settings interface related to my code.
+3. On the 'About' page of your software/website/and or any other format of computer production.
