@@ -48,7 +48,7 @@ export default class siyuan_rmv_btn extends Plugin {
 
 
     reloadInterface() {
-        window.location.reload();
+        // window.location.reload();
         showMessage(this.i18n.reload_hint);
     }
 
@@ -102,7 +102,7 @@ export default class siyuan_rmv_btn extends Plugin {
 
     async onunload() {
         await this.settingUtils.save();
-        this.reloadInterface();
+        // this.reloadInterface();
     }
 
     uninstall() {
