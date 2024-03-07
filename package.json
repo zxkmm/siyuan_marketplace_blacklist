@@ -1,6 +1,6 @@
 {
   "name": "siyuan_marketplace_blacklist",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "type": "module",
   "description": "Add those plugins/ themes/ icons/ templates/ widgets you don't wanna see to black list so you won't see it in marketplace.",
   "repository": "https://github.com/zxkmm/siyuan_marketplace_blacklist",
