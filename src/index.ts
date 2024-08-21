@@ -24,8 +24,8 @@ export default class siyuan_rmv_btn extends Plugin {
   }
 
   applyStyles(css) {
-    console.log("applyStyles");
-    console.log(css);
+    // console.log("applyStyles");
+    // console.log(css);
     const head = document.head || document.getElementsByTagName("head")[0];
     const style = document.createElement("style");
     head.appendChild(style);
@@ -99,7 +99,7 @@ export default class siyuan_rmv_btn extends Plugin {
       );
     }
 
-    console.log("arr_with_css" + _arr_with_css_);
+    // console.log("arr_with_css" + _arr_with_css_);
 
     for (var i = 0; i < _arr_with_css_.length; i++) {
       this.applyStyles(_arr_with_css_[i]);
@@ -177,7 +177,7 @@ export default class siyuan_rmv_btn extends Plugin {
 
         switch (_hideMethods_) {
             case "1":
-                console.log("hide by CSS");
+                // console.log("hide by CSS");
                 this.rmvMarketPlaceCardsByNameCss(
                     this.convertStringToArray(this.settingUtils.get("pluginBlacklist"))
                 );
@@ -187,7 +187,7 @@ export default class siyuan_rmv_btn extends Plugin {
                 );
                 break;
             case "2":
-                console.log("hide by JS listener");
+                // console.log("hide by JS listener");
                 this.rmvMarketPlaceCardsByNameJs(
                     this.convertStringToArray(this.settingUtils.get("pluginBlacklist"))
                 );
