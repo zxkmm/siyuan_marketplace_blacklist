@@ -2,7 +2,7 @@
     "totalSwitch":"Main Switch",
     "totalSwitchDesc":"The Inner Switch of this plugin",
     "hideMethodTitle": "Hide Implementation",
-    "hideMethodDesc": "Choose to hide the plugin implementation. <br>The CSS implementation does not affect performance when not entering the marketplace interface and is recommended for priority use;<br> The listener implementation has roughly the same performance impact in all scenarios, slightly smoother in the marketplace, and is recommended for users with high-performance computers.",
+    "hideMethodDesc": "Choose to hide the plugin implementation. <br>The CSS implementation does not affect performance when not entering the marketplace interface and is recommended for priority use;<br> The listener implementation has roughly the same performance impact in all scenarios, slightly smoother in the marketplace, and is recommended for users with high-performance computers (this lisener impl is not yet support hide by username).",
     "authorBlacklistTitle": "Marketplace Author Blacklist",
     "authorBlacklistDesc": "Enter the GitHub usernames of authors whose plugins/themes/icons/templates/widgets you do not wish to see. This refers to the first sub-path under the root directory of the GitHub repository URL. (Please note the distinction between GitHub's display name and real username) Separate entries with a comma in either English or Chinese half-width format, such as \",\" or \"，\".",
     "pluginBlacklistTitle":"Black List of Bazaar",
