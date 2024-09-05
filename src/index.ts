@@ -12,11 +12,6 @@ enum BlockItemType {
   REPO = "REPO",
 }
 
-enum BlockItemTypeSettingKey {
-  USER = "USER",
-  REPO = "REPO",
-}
-
 export default class siyuan_rmv_btn extends Plugin {
   private settingUtils: SettingUtils;
 
@@ -236,6 +231,10 @@ export default class siyuan_rmv_btn extends Plugin {
   }
 
   addBlockButton() {
+    if (!this.checkIfItsCorrectPage()) {
+      return;
+    }
+
     const existingButtons = document.querySelectorAll(
       '[zxkmm_global_identifier="new_added_element"]',
     );
