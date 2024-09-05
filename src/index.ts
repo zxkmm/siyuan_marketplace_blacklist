@@ -72,10 +72,15 @@ export default class siyuan_rmv_btn extends Plugin {
 
     var _arr_with_css_ = [];
     for (var i = 0; i < _toRemovePackageNameListArray_.length; i++) {
+      //the second one is just in case that someone use different name for repo and package name.....stupid...
       _arr_with_css_.push(
         `.b3-card.b3-card--wrap[data-obj*='"name":"${_toRemovePackageNameListArray_[i]}"'] {
             display: none;
-        }`,
+        }
+        .b3-card.b3-card--wrap[data-obj*='"repoURL":"https://github.com/'][data-obj*='/${_toRemovePackageNameListArray_[i]}'] {
+            display: none;
+        }
+        `,
       );
     }
 
@@ -98,7 +103,7 @@ export default class siyuan_rmv_btn extends Plugin {
     for (var i = 0; i < _toRemoveGitHubUsernameListArray_.length; i++) {
       _arr_with_css_.push(
         `.b3-card.b3-card--wrap[data-obj*='"repoURL":"https://github.com/${_toRemoveGitHubUsernameListArray_[i]}/'] {
-            display: none;
+        display: none;
         }`,
       );
     }
@@ -111,7 +116,7 @@ export default class siyuan_rmv_btn extends Plugin {
   }
 
   b3cardClickListener() {
-    console.log("called");
+    // console.log("called");
     const observer = new MutationObserver((mutationsList, observer) => {
       for (let mutation of mutationsList) {
         if (mutation.type === "childList") {
@@ -138,7 +143,7 @@ export default class siyuan_rmv_btn extends Plugin {
 
   addClickListener(element) {
     element.addEventListener("click", () => {
-      console.log("click card callback");
+      // console.log("click card callback");
       for (let i = 0; i < 20; i++) {
         setTimeout(() => this.addBlockButton(), i * 50);
       }
@@ -235,37 +240,32 @@ export default class siyuan_rmv_btn extends Plugin {
       return;
     }
 
-    const existingButtons = document.querySelectorAll(
+    const existingNewlyAddedElem = document.querySelectorAll(
       '[zxkmm_global_identifier="new_added_element"]',
     );
 
-    if (existingButtons.length > 0) {
-      console.log("Elements already exist, removing and re-adding");
-      console.log(existingButtons);
-      existingButtons.forEach((elem) => elem.remove());
+    if (existingNewlyAddedElem.length > 0) {
+      existingNewlyAddedElem.forEach((elem) => elem.remove());
     }
 
-    console.log("add btn");
-    console.log("222");
     const feedbackButton = document.querySelector('a[data-type="feedback"]'); // feed back icon
-    console.log("feedbackbtn", feedbackButton);
 
     if (feedbackButton) {
       const blockPluginBtn = document.createElement("a");
-      blockPluginBtn.title = "集市黑名单：拉黑这个插件";
+      blockPluginBtn.title = this.i18n.blockPluginPopupHint;
       blockPluginBtn.className = "b3-button b3-button--blacklist"; //TODO: write and use another btn css
       blockPluginBtn.style.width = "168px";
-      blockPluginBtn.textContent = "拉黑插件";
+      blockPluginBtn.textContent = this.i18n.blockPluginButton;
       blockPluginBtn.setAttribute(
         "zxkmm_global_identifier",
         "new_added_element",
       );
 
       const blockAuthorBtn = document.createElement("a");
-      blockAuthorBtn.title = "集市黑名单：拉黑这个作者";
+      blockAuthorBtn.title = this.i18n.blockUserPopupHint;
       blockAuthorBtn.className = "b3-button b3-button--blacklist";
       blockAuthorBtn.style.width = "168px";
-      blockAuthorBtn.textContent = "拉黑作者";
+      blockAuthorBtn.textContent = this.i18n.blockUserButton;
       blockAuthorBtn.setAttribute(
         "zxkmm_global_identifier",
         "new_added_element",
@@ -276,14 +276,14 @@ export default class siyuan_rmv_btn extends Plugin {
         event.preventDefault();
         // idk how siyuan listen the click callback
         // but just in case and also in case it changed in the future....
-        console.log("click callback TODO TODO TODO!!");
+        // console.log("click callback TODO TODO TODO!!");
         const userName = this.fetchGithubRepoForCurrentDisplayItem();
         this.appendCurrentItemIntoList(BlockItemType.REPO, userName);
       };
 
       blockAuthorBtn.onclick = (event: Event) => {
         event.preventDefault(); //
-        console.log("click callback TODO TODO TODO!!");
+        // console.log("click callback TODO TODO TODO!!");
         const userName = this.fetchGithubUserForCurrentDisplayItem();
         this.appendCurrentItemIntoList(BlockItemType.USER, userName);
       };
@@ -298,10 +298,10 @@ export default class siyuan_rmv_btn extends Plugin {
       separator1.setAttribute("zxkmm_global_identifier", "new_added_element");
 
       const parentDiv = feedbackButton.parentElement;
-      console.log("parentDiv:", parentDiv);
+      // console.log("parentDiv:", parentDiv);
 
       if (parentDiv) {
-        console.log("addded btnnn");
+        // console.log("addded btnnn");
         // feed back btn pos
         parentDiv.appendChild(separator);
         parentDiv.appendChild(blockPluginBtn);
@@ -345,7 +345,9 @@ export default class siyuan_rmv_btn extends Plugin {
             blockListArrayString,
           );
           this.refreshCss();
-          showMessage(`已拉黑${_block_name_}的所有插件`);
+          showMessage(
+            this.i18n.blockUserNoti.replace("${_block_name_}", _block_name_),
+          );
           this.backToList();
           break;
         case BlockItemType.REPO:
@@ -354,7 +356,9 @@ export default class siyuan_rmv_btn extends Plugin {
             blockListArrayString,
           );
           this.refreshCss();
-          showMessage(`已拉黑${_block_name_}插件`);
+          showMessage(
+            this.i18n.blockPluginNoti.replace("${_block_name_}", _block_name_),
+          );
           this.backToList();
           break;
       }
@@ -392,6 +396,15 @@ export default class siyuan_rmv_btn extends Plugin {
         2: "JS listener",
       },
     });
+
+    this.settingUtils.addItem({
+      key: "enableOneclickBlock",
+      value: true,
+      type: "checkbox",
+      title: this.i18n.enableOneclickBlock,
+      description: this.i18n.enableOneclickBlockDesc,
+    });
+
     this.settingUtils.addItem({
       key: "pluginBlacklist",
       value: "",
@@ -488,7 +501,9 @@ export default class siyuan_rmv_btn extends Plugin {
           break;
       }
 
-      this.b3cardClickListener();
+      if (this.settingUtils.get("enableOneclickBlock")) {
+        this.b3cardClickListener();
+      }
     }
   }
 

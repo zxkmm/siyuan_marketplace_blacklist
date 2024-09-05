@@ -2,18 +2,10 @@
   "name": "siyuan_marketplace_blacklist",
   "author": "zxkmm",
   "url": "https://github.com/siyuan-note/plugin-sample-vite-svelte",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "minAppVersion": "2.11.4",
-  "backends": [
-    "windows",
-    "linux",
-    "darwin"
-  ],
-  "frontends": [
-    "desktop",
-    "browser-desktop",
-    "desktop-window"
-  ],
+  "backends": ["windows", "linux", "darwin"],
+  "frontends": ["desktop", "browser-desktop", "desktop-window"],
   "displayName": {
     "en_US": "siyuan_marketplace_blacklist",
     "zh_CN": "集市黑名单"
@@ -27,11 +19,20 @@
     "zh_CN": "README_zh_CN.md"
   },
   "funding": {
-    "custom": [
-      "https://github.com/zxkmm/zxkmm"
-    ]
+    "custom": ["https://github.com/zxkmm/zxkmm"]
   },
   "keywords": [
-    "集市", "黑名单", "集市黑名单", "隐藏", "移除", "zxkmm", "marketplace blacklist", "marketplace", "blacklist", "blocklist", "remove", "hide"
+    "集市",
+    "黑名单",
+    "集市黑名单",
+    "隐藏",
+    "移除",
+    "zxkmm",
+    "marketplace blacklist",
+    "marketplace",
+    "blacklist",
+    "blocklist",
+    "remove",
+    "hide"
   ]
 }
