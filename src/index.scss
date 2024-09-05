@@ -24,3 +24,8 @@
         padding: 2px 8px;
     }
 }
+
+.b3-button--blacklist {
+    color: var(--b3-theme-on-primary);
+    background-color: var(--b3-theme-error);
+}
