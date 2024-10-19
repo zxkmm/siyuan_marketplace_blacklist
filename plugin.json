@@ -2,13 +2,13 @@
   "name": "siyuan_marketplace_blacklist",
   "author": "zxkmm",
   "url": "https://github.com/siyuan-note/plugin-sample-vite-svelte",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "minAppVersion": "2.11.4",
-  "backends": ["windows", "linux", "darwin"],
+  "backends": ["all"],
   "frontends": ["desktop", "browser-desktop", "desktop-window"],
   "displayName": {
     "en_US": "siyuan_marketplace_blacklist",
-    "zh_CN": "集市黑名单"
+    "zh_CN": "集市助手"
   },
   "description": {
     "en_US": "Add those plugins/ themes/ icons/ templates/ widgets you don't wanna see to black list so you won't see it in marketplace.",
@@ -23,6 +23,7 @@
   },
   "keywords": [
     "集市",
+    "助手",
     "黑名单",
     "集市黑名单",
     "隐藏",
