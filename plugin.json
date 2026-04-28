@@ -1,8 +1,8 @@
 {
   "name": "siyuan_marketplace_blacklist",
   "author": "zxkmm",
-  "url": "https://github.com/siyuan-note/plugin-sample-vite-svelte",
-  "version": "1.0.2",
+  "url": "https://github.com/zxkmm/siyuan_marketplace_blacklist",
+  "version": "1.0.3",
   "minAppVersion": "3.6.0",
   "backends": ["all"],
   "frontends": ["desktop", "browser-desktop", "desktop-window"],
@@ -19,7 +19,7 @@
     "zh_CN": "README_zh_CN.md"
   },
   "funding": {
-    "custom": ["https://github.com/zxkmm/zxkmm"]
+    "custom": ["https://zxkmm.com/donate"]
   },
   "keywords": [
     "集市",
