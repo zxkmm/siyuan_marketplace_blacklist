@@ -2,8 +2,8 @@
   "name": "siyuan_marketplace_blacklist",
   "author": "zxkmm",
   "url": "https://github.com/siyuan-note/plugin-sample-vite-svelte",
-  "version": "1.0.1",
-  "minAppVersion": "2.11.4",
+  "version": "1.0.2",
+  "minAppVersion": "3.6.0",
   "backends": ["all"],
   "frontends": ["desktop", "browser-desktop", "desktop-window"],
   "displayName": {
