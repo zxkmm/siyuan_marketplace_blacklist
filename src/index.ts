@@ -28,6 +28,11 @@ export default class siyuan_rmv_btn extends Plugin {
     }
   }
 
+  getAuthorList() {
+    const list = this.convertStringToArray(this.settingUtils.get("authorBlacklist"));
+    return list;
+  }
+
   applyStyles(css) {
     // console.log("applyStyles");
     // console.log(css);
@@ -37,19 +42,32 @@ export default class siyuan_rmv_btn extends Plugin {
     style.appendChild(document.createTextNode(css));
   }
 
-  rmvMarketPlaceCardsByNameJs(_toRemoveListArray_) {
+  rmvMarketPlaceCardsByNameJs(_toRemoveListArray_, _toRemoveAuthorListArray_ = []) {
     var siyuanMarketPlaceObserver = new MutationObserver(function (
       mutationsList,
       observer,
     ) {
-      for (var i = 0; i < packageNameClass.length; i++) {
-        if (_toRemoveListArray_.includes(packageNameClass[i].textContent)) {
-          if (packageNameClass[i].closest(".b3-card--wrap")) {
-            packageNameClass[i].closest(".b3-card--wrap").style.display =
-              "none";
+      const cards = document.querySelectorAll(".b3-card");
+      cards.forEach((card) => {
+        const dataObjStr = card.getAttribute("data-obj");
+        if (dataObjStr) {
+          try {
+            const dataObj = JSON.parse(dataObjStr);
+            if (dataObj && dataObj.name && _toRemoveListArray_.includes(dataObj.name)) {
+              (card as HTMLElement).style.display = "none";
+            } else if (dataObj && dataObj.repoURL) {
+              const repoMatch = dataObj.repoURL.match(/https:\/\/github\.com\/([^/]+)\/([^/]+)/);
+              if (repoMatch && repoMatch[2] && _toRemoveListArray_.includes(repoMatch[2])) {
+                (card as HTMLElement).style.display = "none";
+              } else if (repoMatch && repoMatch[1] && _toRemoveAuthorListArray_.includes(repoMatch[1])) {
+                (card as HTMLElement).style.display = "none";
+              }
+            }
+          } catch (e) {
+            // ignore
           }
         }
-      }
+      });
     });
 
     siyuanMarketPlaceObserver.observe(document, {
@@ -63,7 +81,7 @@ export default class siyuan_rmv_btn extends Plugin {
     /** core css
      *
      *
-     * .b3-card.b3-card--wrap[data-obj*='"name":"siyuan_global_zoom"'] {
+     * .b3-card[data-obj*='"name":"siyuan_global_zoom"'] {
      *        display: none;
      * }
      *
@@ -74,10 +92,10 @@ export default class siyuan_rmv_btn extends Plugin {
     for (var i = 0; i < _toRemovePackageNameListArray_.length; i++) {
       //the second one is just in case that someone use different name for repo and package name.....stupid...
       _arr_with_css_.push(
-        `.b3-card.b3-card--wrap[data-obj*='"name":"${_toRemovePackageNameListArray_[i]}"'] {
+        `.b3-card[data-obj*='"name":"${_toRemovePackageNameListArray_[i]}"'] {
             display: none;
         }
-        .b3-card.b3-card--wrap[data-obj*='"repoURL":"https://github.com/'][data-obj*='/${_toRemovePackageNameListArray_[i]}'] {
+        .b3-card[data-obj*='"repoURL":"https://github.com/'][data-obj*='/${_toRemovePackageNameListArray_[i]}'] {
             display: none;
         }
         `,
@@ -95,14 +113,14 @@ export default class siyuan_rmv_btn extends Plugin {
      *
      * core css
      *
-     * .b3-card.b3-card--wrap[data-obj*='"repoURL":"https://github.com/${_toRemoveListArray_[i]}/'] {
+     * .b3-card[data-obj*='"repoURL":"https://github.com/${_toRemoveListArray_[i]}/'] {
      */
 
     var _arr_with_css_ = [];
 
     for (var i = 0; i < _toRemoveGitHubUsernameListArray_.length; i++) {
       _arr_with_css_.push(
-        `.b3-card.b3-card--wrap[data-obj*='"repoURL":"https://github.com/${_toRemoveGitHubUsernameListArray_[i]}/'] {
+        `.b3-card[data-obj*='"repoURL":"https://github.com/${_toRemoveGitHubUsernameListArray_[i]}/'] {
         display: none;
         }`,
       );
@@ -450,13 +468,14 @@ export default class siyuan_rmv_btn extends Plugin {
           );
 
           this.rmvMarketPlaceCardsByGitHubUsernameCss(
-            this.convertStringToArray(this.settingUtils.get("authorBlacklist")),
+            this.getAuthorList(),
           );
           break;
         case "2":
           // console.log("hide by JS listener");
           this.rmvMarketPlaceCardsByNameJs(
             this.convertStringToArray(this.settingUtils.get("pluginBlacklist")),
+            this.getAuthorList(),
           );
           break;
         default:
@@ -488,13 +507,14 @@ export default class siyuan_rmv_btn extends Plugin {
           );
 
           this.rmvMarketPlaceCardsByGitHubUsernameCss(
-            this.convertStringToArray(this.settingUtils.get("authorBlacklist")),
+            this.getAuthorList(),
           );
           break;
         case "2":
           // console.log("hide by JS listener");
           this.rmvMarketPlaceCardsByNameJs(
             this.convertStringToArray(this.settingUtils.get("pluginBlacklist")),
+            this.getAuthorList(),
           );
           break;
         default:
