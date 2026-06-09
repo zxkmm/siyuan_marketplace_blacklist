@@ -1,7 +1,8 @@
-import { Plugin, showMessage } from "siyuan";
+import { Plugin, showMessage, Dialog } from "siyuan";
 import "@/index.scss";
 
 import { SettingUtils } from "./libs/setting-utils";
+import { checkOpenSource, isCacheStale, CheckResult, OpenSourceCache, OS_CACHE_FILE } from "./opensource-checker";
 
 const STORAGE_NAME = "menu-config";
 
@@ -14,6 +15,8 @@ enum BlockItemType {
 
 export default class siyuan_rmv_btn extends Plugin {
   private settingUtils: SettingUtils;
+  private openSourceCache: OpenSourceCache = {};
+  private isMisteryCodeValid: boolean = false;
 
   convertStringToArray(userInput) {
     if (userInput) {
@@ -307,6 +310,17 @@ export default class siyuan_rmv_btn extends Plugin {
       };
       ///^
 
+      const checkOpenSourceBtn = document.createElement("a");
+      checkOpenSourceBtn.title = this.i18n.checkOpenSourcePopupHint;
+      checkOpenSourceBtn.className = "b3-button b3-button--os-check";
+      checkOpenSourceBtn.style.width = "168px";
+      checkOpenSourceBtn.textContent = this.i18n.checkOpenSourceButton;
+      checkOpenSourceBtn.setAttribute("zxkmm_global_identifier", "new_added_element");
+      checkOpenSourceBtn.onclick = (event: Event) => {
+        event.preventDefault();
+        this.handleOpenSourceCheck(checkOpenSourceBtn);
+      };
+
       const separator = document.createElement("div");
       separator.className = "fn__hr--b";
       separator.setAttribute("zxkmm_global_identifier", "new_added_element");
@@ -315,19 +329,145 @@ export default class siyuan_rmv_btn extends Plugin {
       separator1.className = "fn__hr--b";
       separator1.setAttribute("zxkmm_global_identifier", "new_added_element");
 
+      const separator2 = document.createElement("div");
+      separator2.className = "fn__hr--b";
+      separator2.setAttribute("zxkmm_global_identifier", "new_added_element");
+
       const parentDiv = feedbackButton.parentElement;
-      // console.log("parentDiv:", parentDiv);
 
       if (parentDiv) {
-        // console.log("addded btnnn");
-        // feed back btn pos
         parentDiv.appendChild(separator);
         parentDiv.appendChild(blockPluginBtn);
         parentDiv.appendChild(separator1);
         parentDiv.appendChild(blockAuthorBtn);
-        //repo etc pos
+
+        if (this.isMisteryCodeValid) {
+          parentDiv.appendChild(separator2);
+          parentDiv.appendChild(checkOpenSourceBtn);
+        }
       }
     }
+  }
+
+  async handleOpenSourceCheck(btn: HTMLAnchorElement) {
+    const owner = this.fetchGithubUserForCurrentDisplayItem();
+    const repo = this.fetchGithubRepoForCurrentDisplayItem();
+    if (!owner || !repo) {
+      showMessage("Could not determine repository from current page", 3000, "error");
+      return;
+    }
+
+    const cacheKey = `${owner}/${repo}`;
+    const cached = this.openSourceCache[cacheKey];
+    if (cached && !isCacheStale(cached)) {
+      this.showOpenSourceDialog(cached, owner, repo, true);
+      return;
+    }
+
+    const originalText = btn.textContent;
+    btn.textContent = this.i18n.checkOpenSourceChecking;
+    btn.style.opacity = "0.6";
+    btn.style.pointerEvents = "none";
+
+    try {
+      const token = (this.settingUtils.get("githubToken") as string | undefined)?.trim() || undefined;
+      const result = await checkOpenSource(owner, repo, token);
+      this.openSourceCache[cacheKey] = result;
+      await this.saveData(OS_CACHE_FILE, this.openSourceCache);
+      this.showOpenSourceDialog(result, owner, repo, false);
+    } catch (e: any) {
+      showMessage(`${this.i18n.checkOpenSourceError}: ${e?.message ?? e}`, 5000, "error");
+    } finally {
+      btn.textContent = originalText;
+      btn.style.opacity = "";
+      btn.style.pointerEvents = "";
+    }
+  }
+
+  showOpenSourceDialog(result: CheckResult, owner: string, repo: string, isCached: boolean) {
+    const scoreClass =
+      result.score >= 80 ? "os-score--high"
+        : result.score >= 60 ? "os-score--good"
+          : result.score >= 40 ? "os-score--medium"
+            : result.score >= 20 ? "os-score--low"
+              : "os-score--very-low";
+
+    const checkedAt = new Date(result.checkedAt).toLocaleString();
+    const cacheBadge = isCached
+      ? `<span class="os-cache-badge">${this.i18n.checkOpenSourceCacheNote}</span>`
+      : `<span class="os-fresh-badge">${this.i18n.checkOpenSourceFreshNote}</span>`;
+
+    const errorHtml = result.error
+      ? `<div class="os-error"><strong>${this.i18n.checkOpenSourceError}:</strong> ${result.error}</div>`
+      : "";
+
+    let signalsHtml = "";
+    if (result.signals.length > 0) {
+      const rows = result.signals.map(sig => {
+        const cls = sig.score > 0 ? "os-sig-positive" : sig.score < 0 ? "os-sig-negative" : "os-sig-neutral";
+        const scoreStr = sig.score > 0 ? `+${sig.score}` : `${sig.score}`;
+        return `<tr>
+          <td class="os-sig-label">${sig.label}</td>
+          <td class="${cls} os-sig-score">${scoreStr}/${sig.max}</td>
+          <td class="os-sig-details">${sig.details}</td>
+        </tr>`;
+      }).join("");
+      signalsHtml = `
+        <table class="os-signals-table">
+          <thead><tr>
+            <th>${this.i18n.checkOpenSourceSignalCheck}</th>
+            <th>${this.i18n.checkOpenSourceSignalScore}</th>
+            <th>${this.i18n.checkOpenSourceSignalDetails}</th>
+          </tr></thead>
+          <tbody>${rows}</tbody>
+        </table>`;
+    }
+
+    const html = `
+      <div class="os-check-result">
+        <div class="os-header">
+          <div class="os-score-circle ${scoreClass}">${result.score}</div>
+          <div class="os-header-info">
+            <div class="os-grade">${result.grade}</div>
+            <div class="os-meta">${this.i18n.checkOpenSourceCheckedAt}: ${checkedAt} ${cacheBadge}</div>
+          </div>
+        </div>
+        ${errorHtml}
+        ${signalsHtml}
+        <div class="os-footer">
+          <button class="b3-button b3-button--outline os-recheck-btn" id="os-recheck-btn">
+            ${this.i18n.checkOpenSourceRecheck}
+          </button>
+        </div>
+      </div>`;
+
+    const dialog = new Dialog({
+      title: `${this.i18n.checkOpenSourceResultTitle} — ${owner}/${repo}`,
+      content: html,
+      width: "720px",
+    });
+
+    const recheckBtn = dialog.element.querySelector("#os-recheck-btn");
+    recheckBtn?.addEventListener("click", async () => {
+      dialog.destroy();
+      const loadingDialog = new Dialog({
+        title: this.i18n.checkOpenSourceResultTitle,
+        content: `<div class="os-loading"><div class="os-loading-text">${this.i18n.checkOpenSourceChecking}</div></div>`,
+        width: "300px",
+        disableClose: true,
+      });
+      try {
+        const token = (this.settingUtils.get("githubToken") as string | undefined)?.trim() || undefined;
+        const newResult = await checkOpenSource(owner, repo, token);
+        this.openSourceCache[`${owner}/${repo}`] = newResult;
+        await this.saveData(OS_CACHE_FILE, this.openSourceCache);
+        loadingDialog.destroy();
+        this.showOpenSourceDialog(newResult, owner, repo, false);
+      } catch (e: any) {
+        loadingDialog.destroy();
+        showMessage(`${this.i18n.checkOpenSourceError}: ${e?.message ?? e}`, 5000, "error");
+      }
+    });
   }
 
   appendCurrentItemIntoList(_block_type_: BlockItemType, _block_name_: string) {
@@ -451,6 +591,25 @@ export default class siyuan_rmv_btn extends Plugin {
       title: this.i18n.hintTitle,
       description: this.i18n.hintDesc,
     });
+    this.settingUtils.addItem({
+      key: "githubToken",
+      value: "",
+      type: "textinput",
+      title: this.i18n.githubTokenTitle,
+      description: this.i18n.githubTokenDesc,
+    });
+    this.settingUtils.addItem({
+      key: "misteryCode",
+      value: "",
+      type: "textinput",
+      title: this.i18n.misteryCodeTitle,
+      description: this.i18n.misteryCodeDesc,
+    });
+
+    const cacheData = await this.loadData(OS_CACHE_FILE);
+    if (cacheData && typeof cacheData === "object") {
+      this.openSourceCache = cacheData as OpenSourceCache;
+    }
   }
 
   refreshCss() {
@@ -523,6 +682,10 @@ export default class siyuan_rmv_btn extends Plugin {
 
       if (this.settingUtils.get("enableOneclickBlock")) {
         this.b3cardClickListener();
+      }
+
+      if (this.settingUtils.get("misteryCode") === "使用即认同：仅供个人娱乐，仅供个人参考，不作为任何结论依据，结论可能出错，开发者不反对闭源，使用者认同不滥用、不诽谤、不批评闭源插件及其作者。") {
+        this.isMisteryCodeValid = true;
       }
     }
   }

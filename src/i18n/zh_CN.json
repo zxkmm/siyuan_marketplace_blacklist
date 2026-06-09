@@ -19,5 +19,21 @@
   "pluginBlacklistNoteDesc": "你可以在这里做笔记，例如写下为什么不想看到某个插件。",
   "hintTitle": "关于",
   "hintDesc": "<ul><li>● 由 <a href='https://github.com/zxkmm'>zxkmm</a> 制作，并在 MIT 许可下开源。</li><li>● 如果你喜欢这个插件，请给我的 GitHub 仓库点个星⭐。</li><li>● 链接：<a href='https://github.com/zxkmm/siyuan_marketplace_blacklist'>https://github.com/zxkmm/siyuan_marketplace_blacklist</a></li><li>● 即使您不想看到特定的插件, 也请对您想隐藏的特定的插件的原作者保持友善, 并尊重他们的劳动成果, 谢谢! </li></ul>",
-  "uninstall_hint": "siyuan_marketplace_blacklist：卸载成功"
+  "uninstall_hint": "siyuan_marketplace_blacklist：卸载成功",
+  "checkOpenSourceButton": "检测开源性",
+  "checkOpenSourcePopupHint": "分析该仓库的开源可能性",
+  "checkOpenSourceChecking": "检测中...",
+  "checkOpenSourceResultTitle": "开源性分析",
+  "checkOpenSourceRecheck": "重新检测",
+  "checkOpenSourceCacheNote": "缓存",
+  "checkOpenSourceFreshNote": "最新",
+  "checkOpenSourceSignalCheck": "检测项",
+  "checkOpenSourceSignalScore": "评分",
+  "checkOpenSourceSignalDetails": "详情",
+  "checkOpenSourceCheckedAt": "分析时间",
+  "checkOpenSourceError": "分析失败",
+  "githubTokenTitle": "GitHub API Token",
+  "githubTokenDesc": "可选。提供 GitHub 个人访问令牌以提高 API 速率限制（60 → 5000 次/小时）。对公开仓库无需任何权限范围。在 github.com/settings/tokens 生成。",
+  "misteryCodeTitle": "神秘代码",
+  "misteryCodeDesc": "输入神秘代码，进入源神世界"
 }

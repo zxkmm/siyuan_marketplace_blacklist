@@ -19,5 +19,21 @@
   "pluginBlacklistNoteDesc": "You can take notes here, for example write down why you don't wanna see such a plugin",
   "hintTitle": "About",
   "hintDesc": "<ul><li>● By <a href='https://github.com/zxkmm'>zxkmm</a> and open source under the MIT license.</li><li>● Please star⭐ my GitHub repository if you like this plugin.</li><li>● Link: <a href='https://github.com/zxkmm/siyuan_marketplace_blacklist'>https://github.com/zxkmm/siyuan_marketplace_blacklist</a></li><li>● Please keep respect to the author of those item you have hidden",
-  "uninstall_hint": "siyuan_marketplace_blacklist: Uninstall successfully"
+  "uninstall_hint": "siyuan_marketplace_blacklist: Uninstall successfully",
+  "checkOpenSourceButton": "Check Open Source",
+  "checkOpenSourcePopupHint": "Analyze this repository to estimate open source likelihood",
+  "checkOpenSourceChecking": "Checking...",
+  "checkOpenSourceResultTitle": "Open Source Analysis",
+  "checkOpenSourceRecheck": "Re-check Now",
+  "checkOpenSourceCacheNote": "cached",
+  "checkOpenSourceFreshNote": "fresh",
+  "checkOpenSourceSignalCheck": "Check",
+  "checkOpenSourceSignalScore": "Score",
+  "checkOpenSourceSignalDetails": "Details",
+  "checkOpenSourceCheckedAt": "Analyzed",
+  "checkOpenSourceError": "Analysis failed",
+  "githubTokenTitle": "GitHub API Token",
+  "githubTokenDesc": "Optional. Provide a GitHub personal access token to increase API rate limits (60 → 5000 req/hr). No scopes needed for public repos. Generate at github.com/settings/tokens",
+  "misteryCodeTitle": "Mistery Code",
+  "misteryCodeDesc": "Plz input the mistery code."
 }
