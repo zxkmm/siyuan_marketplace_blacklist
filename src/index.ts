@@ -46,31 +46,25 @@ export default class siyuan_rmv_btn extends Plugin {
   }
 
   rmvMarketPlaceCardsByNameJs(_toRemoveListArray_, _toRemoveAuthorListArray_ = []) {
-    var siyuanMarketPlaceObserver = new MutationObserver(function (
-      mutationsList,
-      observer,
-    ) {
+    const hideMatchingCards = () => {
       const cards = document.querySelectorAll(".b3-card");
       cards.forEach((card) => {
-        const dataObjStr = card.getAttribute("data-obj");
-        if (dataObjStr) {
-          try {
-            const dataObj = JSON.parse(dataObjStr);
-            if (dataObj && dataObj.name && _toRemoveListArray_.includes(dataObj.name)) {
+        const repoUrl = card.getAttribute("data-repourl");
+        if (repoUrl) {
+          const repoMatch = repoUrl.match(/https:\/\/github\.com\/([^/]+)\/([^/]+)/);
+          if (repoMatch) {
+            const owner = repoMatch[1];
+            const repo = repoMatch[2];
+            if (_toRemoveListArray_.includes(repo) || _toRemoveAuthorListArray_.includes(owner)) {
               (card as HTMLElement).style.display = "none";
-            } else if (dataObj && dataObj.repoURL) {
-              const repoMatch = dataObj.repoURL.match(/https:\/\/github\.com\/([^/]+)\/([^/]+)/);
-              if (repoMatch && repoMatch[2] && _toRemoveListArray_.includes(repoMatch[2])) {
-                (card as HTMLElement).style.display = "none";
-              } else if (repoMatch && repoMatch[1] && _toRemoveAuthorListArray_.includes(repoMatch[1])) {
-                (card as HTMLElement).style.display = "none";
-              }
             }
-          } catch (e) {
-            // ignore
           }
         }
       });
+    };
+
+    var siyuanMarketPlaceObserver = new MutationObserver(function () {
+      hideMatchingCards();
     });
 
     siyuanMarketPlaceObserver.observe(document, {
@@ -81,24 +75,10 @@ export default class siyuan_rmv_btn extends Plugin {
   }
 
   rmvMarketPlaceCardsByNameCss(_toRemovePackageNameListArray_) {
-    /** core css
-     *
-     *
-     * .b3-card[data-obj*='"name":"siyuan_global_zoom"'] {
-     *        display: none;
-     * }
-     *
-     *
-     */
-
     var _arr_with_css_ = [];
     for (var i = 0; i < _toRemovePackageNameListArray_.length; i++) {
-      //the second one is just in case that someone use different name for repo and package name.....stupid...
       _arr_with_css_.push(
-        `.b3-card[data-obj*='"name":"${_toRemovePackageNameListArray_[i]}"'] {
-            display: none;
-        }
-        .b3-card[data-obj*='"repoURL":"https://github.com/'][data-obj*='/${_toRemovePackageNameListArray_[i]}'] {
+        `.b3-card[data-repourl$="/${_toRemovePackageNameListArray_[i]}"] {
             display: none;
         }
         `,
@@ -111,25 +91,15 @@ export default class siyuan_rmv_btn extends Plugin {
   }
 
   rmvMarketPlaceCardsByGitHubUsernameCss(_toRemoveGitHubUsernameListArray_) {
-    /**
-     * fixd part of that identifier string: "repoURL":"https://github.com/{USERNAME}/
-     *
-     * core css
-     *
-     * .b3-card[data-obj*='"repoURL":"https://github.com/${_toRemoveListArray_[i]}/'] {
-     */
-
     var _arr_with_css_ = [];
 
     for (var i = 0; i < _toRemoveGitHubUsernameListArray_.length; i++) {
       _arr_with_css_.push(
-        `.b3-card[data-obj*='"repoURL":"https://github.com/${_toRemoveGitHubUsernameListArray_[i]}/'] {
+        `.b3-card[data-repourl^="https://github.com/${_toRemoveGitHubUsernameListArray_[i]}/"] {
         display: none;
         }`,
       );
     }
-
-    // console.log("arr_with_css" + _arr_with_css_);
 
     for (var i = 0; i < _arr_with_css_.length; i++) {
       this.applyStyles(_arr_with_css_[i]);
