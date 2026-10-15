@@ -2,7 +2,7 @@
   "name": "siyuan_marketplace_blacklist",
   "author": "zxkmm",
   "url": "https://github.com/zxkmm/siyuan_marketplace_blacklist",
-  "version": "2.0.1",
+  "version": "2.0.2",
   "minAppVersion": "3.6.0",
   "backends": ["all"],
   "frontends": ["desktop", "browser-desktop", "desktop-window"],
@@ -15,11 +15,12 @@
     "zh_CN": "把您不想看到的集市插件/主题/图标/模板/挂件添加到黑名单, 您就再也不会看到它"
   },
   "readme": {
+    "default": "README.md",
     "en_US": "README.md",
     "zh_CN": "README_zh_CN.md"
   },
   "funding": {
-    "custom": ["https://zxkmm.com/donate"]
+    "custom": ["https://pipe.b3log.org/blogs/zxkmm/articles/2025/02/08/1738993480704"]
   },
   "keywords": [
     "集市",
